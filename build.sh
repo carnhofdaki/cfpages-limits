@@ -1,9 +1,32 @@
 #!/bin/sh
 
+export TZ=UTC
+export LC_ALL=C
+export LANG=C
+
 df -h
 pwd
 df -h .
 free -h
+
+OHOST=prunednode.today
+HOST=cfpages-limits.pages.dev
+GREP="grep -o '[0-3][0-9]\.[0-1][0-9]\.[0-9]\+'"
+OVER=$(eval "wget -O - $OHOST | $GREP")
+echo OVER is $OVER
+VER=$(eval "wget -O - $HOST | $GREP")
+echo VER is $VER
+if
+  "$OVER" = "$VER"
+then
+  > latest.zip
+  wget -O - $HOST/files.txt | while read file
+  do
+    wget $HOST/$file
+    cat $file >> latest.zip
+    rm -rf $file
+  done
+fi
 
 . ./init.sh
 
