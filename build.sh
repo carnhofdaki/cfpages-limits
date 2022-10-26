@@ -4,3 +4,5 @@ df -h
 pwd
 df -h .
 free -h
+
+. ./init.sh
