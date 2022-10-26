@@ -12,12 +12,12 @@ free -h
 OHOST=prunednode.today
 HOST=cfpages-limits.pages.dev
 GREP="grep -o '[0-3][0-9]\.[0-1][0-9]\.[0-9]\+'"
-OVER=$(echo eval "wget -O - $OHOST | $GREP")
+OVER=$(eval "wget -O - $OHOST | $GREP")
 echo OVER is $OVER
-VER=$(echo eval "wget -O - $HOST | $GREP")
+VER=$(eval "wget -O - $HOST | $GREP")
 echo VER is $VER
 if
-  "$OVER" != "$VER"
+  test "$OVER" != "$VER"
 then
   > latest.zip
   wget -O - $HOST/files.txt | while read file
