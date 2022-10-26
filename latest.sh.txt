@@ -20,3 +20,8 @@ do
   cat $file >> latest.zip
   rm -rf $file
 done
+
+wget $URL/latest.signed.txt
+SN=$(grep -oE 'snapshot[0-9]{6}.zip' latest.signed.txt)
+ln latest.zip $SN
+sha256sum -c --ignore-missing latest.signed.txt
