@@ -9,8 +9,8 @@ pwd
 df -h .
 free -h
 
-OHOST=prunednode.today
-HOST=cfpages-limits.pages.dev
+OHOST=https://prunednode.today
+HOST=https://cfpages-limits.pages.dev
 GREP="grep -o '[0-3][0-9]\.[0-1][0-9]\.[0-9]\+'"
 OVER=$(eval "wget -O - $OHOST | $GREP")
 echo OVER is $OVER
