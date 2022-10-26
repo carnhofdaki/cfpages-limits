@@ -22,14 +22,19 @@ then
   > latest.zip
   wget -O - $HOST/files.txt | while read file
   do
-    wget $HOST/$file
+    echo Downloading $HOST/$file...
+    wget -q $HOST/$file
     cat $file >> latest.zip
     rm -rf $file
+    echo ...done
   done
 fi
 
 . ./init.sh
 
-split -a 7 -b 24M --verbose latest.zip latest.zip.
-rm -v latest.zip
+# Change links to the script file
+sed -i 's/latest\.zip/latest\.sh\.txt/'
+
+split -a 7 -b 24M --verbose latest.zip latest.zip.$VER.
+rm -rfv latest.zip
 ls latest.zip.* > files.txt
