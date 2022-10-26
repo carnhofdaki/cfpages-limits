@@ -12,9 +12,9 @@ free -h
 OHOST=prunednode.today
 HOST=cfpages-limits.pages.dev
 GREP="grep -o '[0-3][0-9]\.[0-1][0-9]\.[0-9]\+'"
-OVER=$(eval "wget -O - $OHOST | $GREP")
+OVER=$(echo eval "wget -O - $OHOST | $GREP")
 echo OVER is $OVER
-VER=$(eval "wget -O - $HOST | $GREP")
+VER=$(echo eval "wget -O - $HOST | $GREP")
 echo VER is $VER
 if
   "$OVER" != "$VER"
