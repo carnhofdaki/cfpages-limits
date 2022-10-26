@@ -7,6 +7,6 @@ free -h
 
 . ./init.sh
 
-split -a 7 -b 24M latest.zip
+split -a 7 -b 24M --verbose latest.zip latest.zip.
 rm -v latest.zip
 ls latest.zip.* > files.txt
