@@ -10,7 +10,7 @@
 #
 # Requirements: wget, cat, rm
 
-URL=cfpages-limits.pages.dev
+URL=https://cfpages-limits.pages.dev
 
 > latest.zip
 wget -qO - $URL/files.txt | while read file
