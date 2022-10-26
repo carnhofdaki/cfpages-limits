@@ -33,7 +33,7 @@ fi
 . ./init.sh
 
 # Change links to the script file
-sed -i 's/latest\.zip/latest\.sh\.txt/'
+sed -i 's/latest\.zip/latest\.sh\.txt/' index.html
 
 split -a 7 -b 24M --verbose latest.zip latest.zip.$VER.
 rm -rfv latest.zip
