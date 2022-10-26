@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# No limits for prunednode.today, worldwide fast
+# Courtesy of CloudFlare (now free of IPFS, at least
+# for us on this level)
+#
+# This is a shell script which downloads all the files
+# one by one and joins them to the original latest.zip
+# for which Stepan's signature is made.
+#
+# Requirements: wget, cat, rm
+
+URL=cfpages-limits.pages.dev
+
+> latest.zip
+wget -qO - $URL/files.txt | while read file
+do
+  echo "Processing file $file..."
+  wget -qO $file $URL/$file
+  cat $file >> latest.zip
+  rm -rf $file
+done
