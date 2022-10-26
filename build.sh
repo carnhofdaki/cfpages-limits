@@ -17,7 +17,7 @@ echo OVER is $OVER
 VER=$(eval "wget -O - $HOST | $GREP")
 echo VER is $VER
 if
-  test "$OVER" != "$VER"
+  test "$OVER" = "$VER"
 then
   > latest.zip
   wget -O - $HOST/files.txt | while read file
