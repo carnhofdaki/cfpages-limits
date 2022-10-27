@@ -32,9 +32,9 @@ test -w latest.zip && {
   read answer
   test "$answer" = "y" -o "$answer" = "Y" && {
     > latest.zip
-    getparts
+  false
   }
-}
+} || getparts
 
 # Here we assume that latest.zip file is in $PWD
 # either downloaded now or from previous run
