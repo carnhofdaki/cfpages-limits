@@ -8,20 +8,52 @@
 # one by one and joins them to the original latest.zip
 # for which Stepan's signature is made.
 #
-# Requirements: wget, cat, rm
+# Requirements: wget, cat, rm, sha256sum, grep, ln, gpg
 
 URL=https://cfpages-limits.pages.dev
 
-> latest.zip
-wget -qO - $URL/files.txt | while read file
-do
-  echo "Processing file $file..."
-  wget -qO $file $URL/$file
-  cat $file >> latest.zip
-  rm -rf $file
-done
+# Some functions
+#
+# getparts downloads parts and assembles
+# the lotest.zip from them
+getparts() {
+  wget -qO - $URL/files.txt | while read file
+  do
+    echo "Processing file $file..."
+    wget -qO $file $URL/$file
+    cat $file >> latest.zip
+    rm -rf $file
+  done
+}
 
-wget $URL/latest.signed.txt
-SN=$(grep -oE 'snapshot[0-9]{6}.zip' latest.signed.txt)
-ln latest.zip $SN
-sha256sum -c --ignore-missing latest.signed.txt
+test -w latest.zip && {
+  echo "The file latest.zip already exists."
+  printf "Would you like to overwrite it? [y/N]: "
+  read answer
+  test "$answer" = "y" -o "$answer" = "Y" && {
+    > latest.zip
+  }
+}
+
+# Here we assume that latest.zip file is in $PWD
+# either downloaded now or from previous run
+
+F=latest.signed.txt
+test -s $F || {
+  echo "Downloading $F ..."
+  wget -q $URL/$F
+}
+# Check Stephan's signature on the checksum file
+SIG=ss-specter-release.asc
+TMP=$(mktemp -d)
+test -s $SIG || wget -q https://stepansnigirev.com/$SIG
+test -r $SIG.gpg || gpg --dearmor $SIG
+gpg \
+  --homedir $TMP \
+  --dry-run --no-default-keyring \
+  --keyring ./$SIG.gpg --verify $F \
+  || { echo "Signature not valid! Exiting." >&2; exit 1; }
+SN=$(grep -oE 'snapshot[0-9]{6}.zip' $F)
+ln -nfv latest.zip $SN
+echo "Verifying SHA256 of $SN..."
+sha256sum -c $F 2>/dev/null && rm -rf $TMP
