@@ -32,6 +32,7 @@ test -w latest.zip && {
   read answer
   test "$answer" = "y" -o "$answer" = "Y" && {
     > latest.zip
+    getparts
   }
 }
 
