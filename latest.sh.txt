@@ -30,9 +30,9 @@ test -w latest.zip && {
   echo "The file latest.zip already exists."
   printf "Would you like to overwrite it? [y/N]: "
   read answer
-  test "$answer" = "y" -o "$answer" = "Y" && {
+  ! test "$answer" = "y" -o "$answer" = "Y" || {
     > latest.zip
-  false
+    false
   }
 } || getparts
 
