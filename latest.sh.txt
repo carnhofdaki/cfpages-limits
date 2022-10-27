@@ -23,7 +23,7 @@ getparts() {
   while read file
   do
     N=$((N+1))
-    echo "Processing file $file ($N of $LINES)..."
+    echo "Processing file $file... ($((100*$N/$LINES))%)"
     wget -qO $file $URL/$file
     cat $file >> latest.zip
     rm -rf $file
@@ -62,4 +62,7 @@ gpg \
 SN=$(grep -oE 'snapshot[0-9]{6}.zip' $F)
 ln -nfv latest.zip $SN
 echo "Verifying SHA256 of $SN..."
-sha256sum -c $F 2>/dev/null && rm -rf $TMP
+sha256sum -c $F 2>/dev/null && {
+  # Clean up
+  rm -rf $TMP $F ${SIG}* files.txt
+}
