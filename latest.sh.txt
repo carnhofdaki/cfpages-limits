@@ -8,7 +8,7 @@
 # one by one and joins them to the original latest.zip
 # for which Stepan's signature is made.
 #
-# Requirements: wget, cat, rm, sha256sum, grep, ln, gpg
+# Requirements: wget, cat, rm, sha256sum, grep, ln, gpgv
 
 URL=https://cfpages-limits.pages.dev
 
@@ -54,10 +54,7 @@ SIG=ss-specter-release.asc
 TMP=$(mktemp -d)
 test -s $SIG || wget -q https://stepansnigirev.com/$SIG
 test -r $SIG.gpg || gpg --dearmor $SIG
-gpg \
-  --homedir $TMP \
-  --dry-run --no-default-keyring \
-  --keyring ./$SIG.gpg --verify $F \
+gpgv --keyring ./$SIG.gpg $F \
   || { echo "Signature not valid! Exiting." >&2; exit 1; }
 SN=$(grep -oE 'snapshot[0-9]{6}.zip' $F)
 ln -nfv latest.zip $SN
