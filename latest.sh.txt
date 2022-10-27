@@ -15,15 +15,19 @@ URL=https://cfpages-limits.pages.dev
 # Some functions
 #
 # getparts downloads parts and assembles
-# the lotest.zip from them
+# the latest.zip from them
 getparts() {
-  wget -qO - $URL/files.txt | while read file
+  test -r files.txt || wget -q $URL/files.txt
+  LINES=$(wc -l files.txt | cut -d" " -f1)
+  N=0
+  while read file
   do
-    echo "Processing file $file..."
+    N=$((N+1))
+    echo "Processing file $file ($N of $LINES)..."
     wget -qO $file $URL/$file
     cat $file >> latest.zip
     rm -rf $file
-  done
+  done < files.txt
 }
 
 test -w latest.zip && {
@@ -35,6 +39,7 @@ test -w latest.zip && {
     false
   }
 } || getparts
+ls latest.zip || exit 1
 
 # Here we assume that latest.zip file is in $PWD
 # either downloaded now or from previous run
@@ -42,7 +47,7 @@ test -w latest.zip && {
 F=latest.signed.txt
 test -s $F || {
   echo "Downloading $F ..."
-  wget -q $URL/$F
+  wget -q $URL/$F || exit 1
 }
 # Check Stephan's signature on the checksum file
 SIG=ss-specter-release.asc
