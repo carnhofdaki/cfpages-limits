@@ -1,14 +1,25 @@
 #!/bin/sh
 #
-# No limits for prunednode.today, worldwide fast
-# Courtesy of CloudFlare (now free of IPFS, at least
-# for us on this level)
+# No limits for prunednode.today, worldwide fast.
+# Courtesy of CloudFlare Pages (now free of IPFS,
+# at least for us on this level)
 #
 # This is a shell script which downloads all the files
 # one by one and joins them to the original latest.zip
-# for which Stepan's signature is made.
+# for which Stepan's signature of checksum is made.
+#
+# For a more advanced example which is decompressing
+# the ZIP file on the fly using bsdtar which comes from
+# libarchive-tools, see bsdtar.sh.txt and note that
+# no signature or checksum verification is being done
+# there as it all extracts on the fly and does not leave
+# a file to verify. Use bitcoin-cli gettxoutsetinfo
+# to check these data are valid. BTW it would not make
+# sense to distribute anything alse but valid Bitcoin data.
 #
 # Requirements: wget, cat, rm, sha256sum, grep, ln, gpgv
+#
+# Demo: https://asciinema.org/a/532820
 
 URL=https://cfpages-limits.pages.dev
 
@@ -24,9 +35,7 @@ getparts() {
   do
     N=$((N+1))
     echo "Processing file $file... ($((100*$N/$LINES))%)"
-    wget -qO $file $URL/$file
-    cat $file >> latest.zip
-    rm -rf $file
+    wget -qO - $URL/$file >> latest.zip
   done < files.txt
 }
 
