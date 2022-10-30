@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# No limits for prunednode.today, worldwide fast
+# Courtesy of CloudFlare (now free of IPFS).
+#
+# This is a shell script which downloads the zip and on the
+# fly extracts all the files needed to run a pruned node.
+# Check with bitcoin-cli gettxoutsetinfo
+#
+# Requirements: wget, cat, rm, sha256sum, grep, ln, gpg,
+#               gpgv, bsdtar (from libarchive-tools)
+
+URL=https://cfpages-limits.pages.dev
+
+mkdir bitcoin
+wget -O - -q $URL/files.txt | while read file
+do wget -qO - $URL/$file
+done | bsdtar -xvf- -C bitcoin
+ls -d bitcoin || exit 1
