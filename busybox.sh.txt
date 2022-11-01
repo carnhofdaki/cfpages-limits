@@ -17,4 +17,4 @@ cd bitcoin
 wget -O - -q $URL/files.txt | while read file
 do wget -qO - $URL/$file
 done | busybox unzip -
-ls -d bitcoin || exit 1
+ls -d ../bitcoin || exit 1
