@@ -7,6 +7,8 @@
 # fly extracts all the files needed to run a pruned node.
 # Check with bitcoin-cli gettxoutsetinfo
 #
+# See also busybox.sh.txt. The same but with busybox unzip.
+#
 # Requirements: wget, cat, rm, sha256sum, grep, ln, gpg,
 #               gpgv, bsdtar (from libarchive-tools)
 
