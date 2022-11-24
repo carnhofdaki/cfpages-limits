@@ -48,8 +48,8 @@ fi
 # If latest.zip is bigger than zero, split it
 # and make a new files.txt
 test -s latest.zip && {
-  split -a 3 -b 24M --verbose latest.zip latest.zip.${VER}.
-  ls latest.zip.${VER}.* > files.txt
+  split -a 3 -b 24M --verbose latest.zip latest.zip.${OVER}.
+  ls latest.zip.${OVER}.* > files.txt
 }
 rm -rfv latest.zip
 
