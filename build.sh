@@ -16,25 +16,42 @@ OVER=$(eval "wget -O - $OHOST | $GREP")
 echo OVER is $OVER
 VER=$(eval "wget -O - $HOST | $GREP")
 echo VER is $VER
+
+# Following is done always
+wget $HOST/files.txt
+while read file
+do
+  echo Downloading $HOST/$file...
+  wget -q $HOST/$file
+  echo ...done
+done < files.txt
+
+# Now check if there is newer version
+# on prunednode.today
+# If there is no new version, make an
+# empty latest.zip file so it is not
+# downloaded.
+# If there is, rename files.txt to files-old.txt
 if
   test "$OVER" = "$VER"
 then
   > latest.zip
-  wget -O - $HOST/files.txt | while read file
-  do
-    echo Downloading $HOST/$file...
-    wget -q $HOST/$file
-    cat $file >> latest.zip
-    rm -rf $file
-    echo ...done
-  done
+else
+  mv files.txt files-old.txt
+  # The latest.zip will be greater than zero
+  # and downloaded by init.sh
 fi
 
+# Download what is needed
 . ./init.sh
+
+# If latest.zip is bigger than zero, split it
+# and make a new files.txt
+test -s latest.zip && {
+  split -a 3 -b 24M --verbose latest.zip latest.zip.${VER}.
+  ls latest.zip.${VER}.* > files.txt
+}
+rm -rfv latest.zip
 
 # Change links to the script file
 sed -i 's/latest\.zip/latest\.sh\.txt/' index.html
-
-split -a 3 -b 24M --verbose latest.zip latest.zip.$VER.
-rm -rfv latest.zip
-ls latest.zip.* > files.txt

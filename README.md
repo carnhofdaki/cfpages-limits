@@ -2,6 +2,12 @@
 
  * https://developers.cloudflare.com/pages/platform/limits/
 
+The `build.sh` script makes a mirror of [https://prunednode.today]()
+while splitting the big zip file into many smaller ones to fit in
+CloudFlare Pages' limit.
+
+It also always keeps one older version in `files-old.txt`.
+
 ## Example use
 
 ```
@@ -30,3 +36,16 @@ sys	0m54.804s
 ```
 
 It takes around 30 minutes on a home 30Mbps DSL connection.
+
+
+# On-The-Fly
+
+To decompress a zip file on-the-fly, bsdtar from libarchive-tools
+shall be used. But also Busybox unzip uses its own implementation of
+libarchive and can do it.
+
+Two different scripts were added and they can be used as a replacement
+for latest.sh.txt:
+
+  * `bsdtar.sh.txt` - uses bsdtar from libarchive-tools
+  * `busybox.sh.txt` - uses busybox
