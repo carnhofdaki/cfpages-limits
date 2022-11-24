@@ -17,14 +17,18 @@ echo OVER is $OVER
 VER=$(eval "wget -O - $HOST | $GREP")
 echo VER is $VER
 
+downthem() {
+  wget $HOST/$1
+  while read file
+  do
+    echo Downloading $HOST/$file...
+    wget -q $HOST/$file
+    echo ...done
+  done < $1
+}
+
 # Following is done always
-wget $HOST/files.txt
-while read file
-do
-  echo Downloading $HOST/$file...
-  wget -q $HOST/$file
-  echo ...done
-done < files.txt
+downthem files.txt
 
 # Now check if there is newer version
 # on prunednode.today
@@ -36,6 +40,7 @@ if
   test "$OVER" = "$VER"
 then
   > latest.zip
+  downthem files-old.txt
 else
   mv files.txt files-old.txt
   # The latest.zip will be greater than zero
