@@ -13,9 +13,10 @@
 # libarchive-tools, see bsdtar.sh.txt and note that
 # no signature or checksum verification is being done
 # there as it all extracts on the fly and does not leave
-# a file to verify. Use bitcoin-cli gettxoutsetinfo
+# a file to verify. Use bitcoin-cli gettxoutsetinfo muhash
+# while having coinstatsindex enabled (the results differ)
 # to check these data are valid. BTW it would not make
-# sense to distribute anything alse but valid Bitcoin data.
+# sense to distribute anything alsa but valid Bitcoin data.
 #
 # Requirements: wget, cat, rm, sha256sum, grep, ln, gpgv
 #

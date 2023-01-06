@@ -1,20 +1,27 @@
 #!/bin/sh
 #
-# No limits for prunednode.today, worldwide fast
-# Courtesy of CloudFlare (now free of IPFS).
+# No limits for prunednode.today,
+# worldwide fast
+# Courtesy of CloudFlare
+# (now free of IPFS).
 #
-# This is a shell script which downloads the zip and on the
-# fly extracts all the files needed to run a pruned node.
-# Check with bitcoin-cli gettxoutsetinfo
+# This shell script downloads
+# and extracts the zip on the
+# fly making it possible to run
+# a Bitcoin Core pruned node in
+# short time with no temporary
+# data stored.
 #
-# Requirements: wget, cat, rm, sha256sum, grep, ln, gpg,
-#               gpgv, busybox unzip
+# Check by running
+# bitcoin-cli gettxoutsetinfo muhash
+#
+# Requirements: busybox wget, busybox unzip
 
 URL=https://cfpages-limits.pages.dev
 
-mkdir bitcoin
+mkdir -p bitcoin/wallets
 cd bitcoin
-wget -O - -q $URL/files.txt | while read file
-do wget -qO - $URL/$file
-done | busybox unzip -
-ls -d ../bitcoin || exit 1
+wget -O - -q $URL/files.txt \
+  | while read file
+  do wget -qO - $URL/$file
+  done | busybox unzip -
