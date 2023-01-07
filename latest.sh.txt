@@ -57,7 +57,7 @@ ls latest.zip || exit 1
 F=latest.signed.txt
 test -s $F || {
   echo "Downloading $F ..."
-  wget -q $URL/$F || exit 1
+  wget -4 -q $URL/$F || exit 1
 }
 # Check Stephan's signature on the checksum file
 SIG=ss-specter-release.asc

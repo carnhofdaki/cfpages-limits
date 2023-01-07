@@ -1,6 +1,7 @@
 # cfpages-limits
 
  * https://developers.cloudflare.com/pages/platform/limits/
+ * https://developers.cloudflare.com/cache/about/default-cache-behavior
 
 The `build.sh` script makes a mirror of [https://prunednode.today]()
 while splitting the big zip file into many smaller ones to fit in
@@ -49,3 +50,21 @@ for latest.sh.txt:
 
   * `bsdtar.sh.txt` - uses bsdtar from libarchive-tools
   * `busybox.sh.txt` - uses busybox
+
+
+# Deployment
+
+ 1. a first time deployment downloads everything from the upstream
+    (now prunednode.today) but should take less than 30 minutes
+    on Cloud Flare nodes.
+ 2. any consecutive redeployment (if prunednode.today did not change)
+    will download everything from CF and takes a little bit more than
+    10 minutes - see below.
+
+```
+10:59:43.118	Cloning repository...
+10:59:44.130	From https://github.com/carnhofdaki/cfpages-limits
+...
+11:10:04.957	Success: Assets published!
+11:10:05.688	Success: Your site was deployed!
+```

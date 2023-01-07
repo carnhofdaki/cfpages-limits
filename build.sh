@@ -29,6 +29,11 @@ downthem() {
 
 # Following is done always
 downthem files.txt
+for file in latest.zip.${OVER}.[a-z][a-z][a-z]
+do
+  ln "$file" "${file}.zip"
+done
+ls latest.zip.${OVER}.*.zip > files.txt
 
 # Now check if there is newer version
 # on prunednode.today

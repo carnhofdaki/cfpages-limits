@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+# No limits for prunednode.today,
+# worldwide fast
+# Courtesy of CloudFlare
+# (now free of IPFS).
+#
+# This shell script only tests
+# the speed of download.
+#
+# Requirements: busybox wget
+
+URL=https://cfpages-limits.pages.dev
+
+wget -O - -q $URL/files.txt \
+  | wget -O /dev/null --base $URL -i -
+
+#  | xargs -P2 -n1 -Ifile -L1 wget -4 -O /dev/null "$URL/file"
